@@ -6,17 +6,23 @@ pipeline {
         DOCKERHUB_CREDENTIALS=credentials('dockerhub')
     }
     stages {
-        stage('Gerando_Imagem') {
-            steps ('Build'){
+        stage('Build') {
+            steps {
                 sh 'docker image build -t ${IMAGE_NAME}:${IMAGE_TAG} .'
             }
-            steps ('Login') {
+        }    
+        stage('Login') {
+            steps {
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
             }
-            steps ('Push') {
+        }
+        stage('Push') {   
+            steps {
                 sh 'docker push ${IMAGE_NAME}::${IMAGE_TAG}'
             }
-            steps ('Logout') {
+        }
+        stage('Logout') {
+            steps {
                 sh 'docker logout'
             }
         }

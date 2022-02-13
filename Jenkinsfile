@@ -21,6 +21,13 @@ pipeline {
                 sh 'docker push ${IMAGE_NAME}:${IMAGE_TAG}'
             }
         }
+        stage('Deploy EKS') {
+            kubernetesDeploy(
+                configs: 'k8s/app.yaml',
+                kubeconfigId: 'eks',
+                enableConfigSubstitution: true
+            ) 
+        }
     }
     post {
         always {

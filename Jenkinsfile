@@ -21,17 +21,10 @@ pipeline {
                 sh 'docker push ${IMAGE_NAME}:${IMAGE_TAG}'
             }
         }
-        stage('Logout') {
-            steps {
-                sh 'docker logout'
-            }
-        }
-        stage('Deploy EKS') {
-            kubernetesDeploy(
-               configs: 'k8s/app.yaml',
-               kubeconfigId: 'eks',
-               enableConfigSubstitution: true
-            )
+    }
+    post {
+        always {
+            sh 'docker logout'
         }
     }
 }

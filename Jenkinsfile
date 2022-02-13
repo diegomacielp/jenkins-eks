@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Gerando_Imagem') {
             steps ('Build'){
-                sh 'docker image build -t diegomacielp/nginx:${IMAGE_TAG}'
+                sh 'docker image build -t diegomacielp/nginx:${IMAGE_TAG} .'
             }
         }
     }

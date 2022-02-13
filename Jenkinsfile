@@ -26,5 +26,12 @@ pipeline {
                 sh 'docker logout'
             }
         }
+        stage('Deploy EKS') {
+            kubernetesDeploy(
+               configs: 'k8s/app.yaml',
+               kubeconfigId: 'eks',
+               enableConfigSubstitution: true
+            )
+        }
     }
 }

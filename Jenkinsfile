@@ -18,7 +18,7 @@ pipeline {
         }
         stage('Push') {   
             steps {
-                sh 'docker push ${IMAGE_NAME}::${IMAGE_TAG}'
+                sh 'docker push ${IMAGE_NAME}:${IMAGE_TAG}'
             }
         }
         stage('Logout') {

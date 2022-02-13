@@ -34,3 +34,8 @@ Clique em <i>Add Credentials</i>:
 <p align="justify">Para a criação da credencial do EKS, o mesmo procedimento será tomado, porém o tipo da credencial será <i>Kubernetes configuration (kubeconfig).</i> Selecione <i>Enter durectly</i> e cole o conteúdo do arquivo <i>~/.kube/config</i> da máquina onde o cluster foi criado.</p>
 
 ![github](./prints/jenkins5.png "Credenciais")
+
+## Liberando o acesso do Jenkins ao cluster EKS ##
+
+\# *kubectl create clusterrolebinding cluster-system-anonymous --clusterrole=cluster-admin --user=system:anonymous*
+

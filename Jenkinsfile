@@ -38,7 +38,7 @@ pipeline {
         }
         stage('Instalando KUBECTL'){
             steps{
-               sh 'curl -L "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl -O /tmp"'
+               sh 'curl -L "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" -O /tmp'
                sh 'chmod +x /tmp/kubectl'
                sh 'mv /tmp/kubectl $HOME'
             }

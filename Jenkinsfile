@@ -26,14 +26,14 @@ pipeline {
         stage('Instalando EKSCTL'){
             steps{
                 sh 'curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp'
-                sh 'mv /tmp/eksctl /usr/local/bin'
+                sh 'mv /tmp/eksctl $HOME'
             }
         }
         stage('Conectando ao cluster'){
             steps{
                 withAWS(region:'us-east-2', credentials:'aws') {
-                    sh 'eksctl utils write-kubeconfig --name=$CLUSTER_NAME'
-                    sh 'eksctl get cluster'
+                    sh '$HOME/eksctl utils write-kubeconfig --name=$CLUSTER_NAME'
+                    sh '$HOME/eksctl get cluster'
                 }
             }
         }

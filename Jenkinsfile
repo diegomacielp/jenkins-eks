@@ -35,10 +35,14 @@ pipeline {
         stage('Realizando deploy no EKS'){
             steps{
                 withAWS(region:'us-east-2', credentials:'aws') {
-                    //sh 'eksctl utils write-kubeconfig --name=$CLUSTER_NAME'
-                    //sh 'kubectl create deploy --image=${IMAGE_NAME}:${IMAGE_TAG} $CLUSTER_NAME'
-                    sh 'echo $AWS_ACCESS_KEY_ID'
-                    sh 'echo $AWS_SECRET_ACCESS_KEY'
+                    sh 'eksctl utils write-kubeconfig --name=$CLUSTER_NAME'
+                    sh 'mkdir $HOME/.aws'
+                    sh 'echo "[default]" > $HOME/.aws/credentials'
+                    sh 'echo "aws_access_key_id = $AWS_ACCESS_KEY_ID" >> $HOME/.aws/credentials'
+                    sh 'echo "aws_secret_access_key = $AWS_SECRET_ACCESS_KEY" >> $HOME/.aws/credentials'
+                    sh 'echo "[default]" > $HOME/.aws/config'
+                    sh 'echo "region = us-east-2" >> $HOME/.aws/config'
+                    sh 'kubectl create deploy --image=${IMAGE_NAME}:${IMAGE_TAG} $CLUSTER_NAME'
                 }
             }
         }

@@ -36,11 +36,16 @@ pipeline {
                 }
             }
         }
-        stage('Criando deploy no EKS'){
+        stage('Instalando KUBECTL'){
             steps{
-                withKubeConfig([credentialsId: 'jenkins', serverUrl: '/var/lib/jenkins/.kube/config']){
-                    sh 'kubectl create deploy --image=${IMAGE_NAME}:${IMAGE_TAG} $DEPLOY_NAME'
-                }
+               sh 'curl -L "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl -O /tmp"'
+               sh 'chmod +x /tmp/kubectl'
+               sh 'mv /tmp/kubectl $HOME'
+            }
+        }
+        stage('Realizando deploy no EKS'){
+            steps{
+                sh 'kubectl create deploy --image=${IMAGE_NAME}:${IMAGE_TAG} $CLUSTER_NAME'
             }
         }
     }

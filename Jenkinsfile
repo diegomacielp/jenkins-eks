@@ -38,14 +38,15 @@ pipeline {
         }
         stage('Instalando KUBECTL'){
             steps{
-               sh 'curl -L "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" -O /tmp'
-               sh 'chmod +x /tmp/kubectl'
-               sh 'mv /tmp/kubectl $HOME'
+               sh 'curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"'
+               sh 'chmod +x kubectl'
+               sh 'mv kubectl $HOME'
             }
         }
         stage('Realizando deploy no EKS'){
             steps{
-                sh 'kubectl create deploy --image=${IMAGE_NAME}:${IMAGE_TAG} $CLUSTER_NAME'
+                sh 'echo $PATH'
+                sh '$HOME/kubectl create deploy --image=${IMAGE_NAME}:${IMAGE_TAG} $CLUSTER_NAME'
             }
         }
     }

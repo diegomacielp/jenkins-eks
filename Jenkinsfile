@@ -24,7 +24,7 @@ pipeline {
         }
         stage('Deploy EKS') {
             steps {
-                withAWS(region:'us-east-2', credentials:'eks) {
+                withAWS(region:'us-east-2', credentials:'eks') {
                     sh 'kubectl create deploy --image=${IMAGE_NAME}:${IMAGE_TAG} ${param_deploy_name}'
                 }
             }

@@ -25,18 +25,16 @@ pipeline {
         }
         stage('Instalando EKSCTL e KUBECTL'){
             steps{
-                sh 'mkdir $HOME/bin/'
                 sh 'curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp'
-                sh 'mv /tmp/eksctl $HOME/bin'
+                sh 'sudo mv /tmp/eksctl /usr/local/bin'
                 sh 'curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"'
                 sh 'chmod +x kubectl'
-                sh 'mv kubectl $HOME/bin/'
+                sh 'sudo mv kubectl /usr/local/bin'
             }
         }
         stage('Realizando deploy no EKS'){
             steps{
                 withAWS(region:'us-east-2', credentials:'aws') {
-                    sh 'export PATH=$PATH:$HOME/bin'
                     sh 'eksctl utils write-kubeconfig --name=$CLUSTER_NAME'
                     sh 'kubectl create deploy --image=${IMAGE_NAME}:${IMAGE_TAG} $CLUSTER_NAME'
                 }

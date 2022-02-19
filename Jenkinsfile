@@ -3,6 +3,7 @@ pipeline {
     environment {
         IMAGE_NAME = "${param_image_name}"
         IMAGE_TAG = "${param_image_tag}"
+        DEPLOY_NAME = "${param_deploy_name}"
         DOCKERHUB_CREDENTIALS=credentials('dockerhub')
     }
     stages {
@@ -22,11 +23,11 @@ pipeline {
             }
         }
         stage('Deploy EKS') {
-            kubernetesDeploy(
-                configs: 'k8s/app.yaml',
-                kubeconfigId: 'eks',
-                enableConfigSubstitution: true
-            ) 
+            steps {
+                withAWS(region:'us-east-2', credentials:'eks) {
+                    sh 'kubectl create deploy --image=${IMAGE_NAME}:${IMAGE_TAG} ${param_deploy_name}'
+                }
+            }
         }
     }
     post {

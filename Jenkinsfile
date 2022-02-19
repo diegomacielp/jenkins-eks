@@ -38,7 +38,9 @@ pipeline {
         }
         stage('Criando deploy no EKS'){
             steps{
-                sh 'kubectl create deploy --image=${IMAGE_NAME}:${IMAGE_TAG} $DEPLOY_NAME'
+                withKubeConfig([serverUrl: '/var/lib/jenkins/.kube/config']){
+                    sh 'kubectl create deploy --image=${IMAGE_NAME}:${IMAGE_TAG} $DEPLOY_NAME'
+                }
             }
         }
     }

@@ -33,8 +33,12 @@ pipeline {
             steps{
                 withAWS(region:'us-east-2', credentials:'aws') {
                     sh '$HOME/eksctl utils write-kubeconfig --name=$CLUSTER_NAME'
-                    sh '$HOME/eksctl get cluster'
                 }
+            }
+        }
+        stage('Criando deploy no EKS'){
+            steps{
+                sh 'kubectl create deploy --image=${IMAGE_NAME}:${IMAGE_TAG} $DEPLOY_NAME'
             }
         }
     }
